@@ -7,6 +7,7 @@ import WorkoutScreen from './screens/Workout/WorkoutScreen';
 import CaloriesScreen from './screens/Calories/CaloriesScreen';
 import SettingsScreen from './screens/Settings/SettingsScreen';
 import StartScreen from './screens/Start/StartScreen';
+import AiScreen from './screens/Ai/AiScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -36,6 +37,9 @@ const App = () => {
 
         {/* Settings Screen */}
         <Stack.Screen name="Settings" component={SettingsScreen} />
+
+        {/* Settings Screen */}
+        <Stack.Screen name="Ai" component={AiScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

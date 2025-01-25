@@ -11,6 +11,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           onPress={() => navigation.navigate('Settings')}  // Navigate to Settings
         />
       ),
+      headerLeft: () => (
+        <Button 
+          title="Bot"
+          onPress={() => navigation.navigate('Ai')}  // Navigate to Ai
+        />
+      ),
     });
   }, [navigation]);
 
