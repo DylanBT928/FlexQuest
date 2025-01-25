@@ -11,9 +11,9 @@ import {
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase with anon key (secure for frontend use)
-const SUPABASE_URL = 'https://supabase.com/dashboard/projects' // 'https://zfpgtgaihwwctipacpgl.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR0Y2xyeGNiZWhwbndxb2FqaGx6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA1NjgzOTQsImV4cCI6MjA0NjE0NDM5NH0.GOkTpjlIJ_RwzPGXLofn0hixMVU1jamIMBQkVnmoN4A'
-//  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpmcGd0Z2FpaHd3Y3RpcGFjcGdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc3NzczMTQsImV4cCI6MjA1MzM1MzMxNH0.xCBt7nk2hFIM-rdWi5KWIsE02lhWAO9miuvqnIkF7tg'; // Replace with anon key
+const SUPABASE_URL = 'https://lifotcdgyxayvtxvjjmr.supabase.co'
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpZm90Y2RneXhheXZ0eHZqam1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc3ODkwNDcsImV4cCI6MjA1MzM2NTA0N30.1_mUwKiJdFWHkK3zy6Y8MGFoMRlLH6W8hlqEmpVxBgI'
+
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const StartScreen = ({ navigation }: { navigation: any }) => {
@@ -28,7 +28,7 @@ const StartScreen = ({ navigation }: { navigation: any }) => {
   
       // Check if username and password match
       const { data, error } = await supabase
-        .from('users')
+        .from('User')
         .select('username, password')
         .eq('username', username)
         .eq('password', password);
