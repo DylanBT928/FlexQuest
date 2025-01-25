@@ -1,5 +1,46 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { View, Button, StyleSheet } from 'react-native';
+
+interface State {
+  strength: number
+  dexterity: number
+  intelligence: number
+  faith: number
+  arcane: number
+}
+
+type CounterAction =
+  | { type: "respec" }
+  | { type: "setStrength"; value: State["strength"] }
+  | { type: "setDexterity"; value: State["dexterity"] }
+  | { type: "setIntelligence"; value: State["intelligence"] }
+  | { type: "setFaith"; value: State["faith"] }
+  | { type: "setArcane"; value: State["arcane"] }
+
+const initialStrength: State = { strength: 0 }
+const initialDexterity: State = { dexterity: 0 }
+const initialIntelligence: State = { intelligence: 0 }
+const initialFaith: State = { faith: 0 }
+const initialArcane: State = { arcane: 0 }
+
+function stateReducer(state: State, action: CounterAction): State {
+  switch (action.type) {
+    case "respec":
+      return initialState
+    case "setStrength":
+      return initialStrength
+    case "setDexterity":
+      return initialDexterity
+    case "setIntelligence":
+      return initialIntelligence
+    case "setFaith":
+      return initialFaith
+    case "setArcane":
+      return initialArcane
+    default:
+      throw new Error("Unknown action.");
+  }
+}
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   useEffect(() => {
