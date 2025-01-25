@@ -1,7 +1,19 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Button, StyleSheet } from 'react-native';
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
+  useEffect(() => {
+    // Set the button in the header on mount
+    navigation.setOptions({
+      headerRight: () => (
+        <Button 
+          title="Settings"
+          onPress={() => navigation.navigate('Settings')}  // Navigate to Settings
+        />
+      ),
+    });
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <Button 
