@@ -81,6 +81,8 @@ export default App;
 // Safe styles for reusable layout
 const styles = StyleSheet.create({
   safeArea: {
-    flex: 1
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

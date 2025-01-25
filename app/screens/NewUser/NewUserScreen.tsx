@@ -3,14 +3,19 @@ import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase
-const SUPABASE_URL = 'https://zfpgtgaihwwctipacpgl.supabase.co';
-const SUPABASE_KEY =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpmcGd0Z2FpaHd3Y3RpcGFjcGdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc3NzczMTQsImV4cCI6MjA1MzM1MzMxNH0.xCBt7nk2hFIM-rdWi5KWIsE02lhWAO9miuvqnIkF7tg'; // Replace with anon key
+const SUPABASE_URL = 'https://supabase.com/dashboard/projects' // 'https://zfpgtgaihwwctipacpgl.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR0Y2xyeGNiZWhwbndxb2FqaGx6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA1NjgzOTQsImV4cCI6MjA0NjE0NDM5NH0.GOkTpjlIJ_RwzPGXLofn0hixMVU1jamIMBQkVnmoN4A'
+//  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpmcGd0Z2FpaHd3Y3RpcGFjcGdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc3NzczMTQsImV4cCI6MjA1MzM1MzMxNH0.xCBt7nk2hFIM-rdWi5KWIsE02lhWAO9miuvqnIkF7tg'; // Replace with anon key
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const NewUserScreen = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [equipment, setEquipment] = useState('');
+  const [heightFt, setHeightFt] = useState('');
+  const [weight, setWeight] = useState('');
+  const [goalWeight, setGoalWeight] = useState('');
+  const [timeFrame, setTimeFrame] = useState('');
 
   const handleCreateAccount = async () => {
     if (!username || !password) {
