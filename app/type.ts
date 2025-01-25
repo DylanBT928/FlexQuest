@@ -5,5 +5,6 @@ export type RootTabParamList = {
   Calories: undefined;
   Settings: undefined;  
   Start: undefined;
+  NewUser: undefined;
   Ai: undefined;
 };

@@ -7,6 +7,7 @@ import WorkoutScreen from './screens/Workout/WorkoutScreen';
 import CaloriesScreen from './screens/Calories/CaloriesScreen';
 import SettingsScreen from './screens/Settings/SettingsScreen';
 import StartScreen from './screens/Start/StartScreen';
+import NewUserScreen from './screens/NewUser/NewUserScreen';
 import AiScreen from './screens/Ai/AiScreen';
 
 const Tab = createBottomTabNavigator();
@@ -32,6 +33,11 @@ const App = () => {
         {/* StartScreen as the initial screen */}
         <Stack.Screen name="Start" 
         component={StartScreen} 
+        options={{ headerShown: false }} 
+        />
+
+        <Stack.Screen name="NewUser" 
+        component={NewUserScreen} 
         options={{ headerShown: false }} 
         />
 
