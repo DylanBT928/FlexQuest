@@ -5,12 +5,8 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   return (
     <View style={styles.container}>
       <Button 
-        title="Go to Workout Screen"
-        onPress={() => navigation.navigate('Workout')}
-      />
-      <Button 
-        title="Go to Calories Screen"
-        onPress={() => navigation.navigate('Calories')}
+        title="Go to Home Screen"
+        onPress={() => navigation.navigate('Home')}
       />
     </View>
   );

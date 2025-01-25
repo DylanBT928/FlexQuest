@@ -1,6 +1,6 @@
 // app/types.ts
-export type RootStackParamList = {
-    Home: undefined;
-    Second: undefined;
-  };
-  
+export type RootTabParamList = {
+  First: undefined;
+  Home: undefined;
+  Workout: undefined;
+};
