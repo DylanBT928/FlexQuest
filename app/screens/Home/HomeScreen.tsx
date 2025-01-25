@@ -5,6 +5,14 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   useEffect(() => {
     // Set the button in the header on mount
     navigation.setOptions({
+      headerStyle: {
+        backgroundColor: '#FFFFFF', // Header background color
+        height: 50, // Set header height to 50px
+      },
+      headerTitleStyle: {
+        fontSize: 18, // Set font size to 18px
+        color: '#000000', // Set font color to black
+      },
       headerRight: () => (
         <Button 
           title="Settings"

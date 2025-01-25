@@ -2,6 +2,8 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet } from 'react-native';
 import HomeScreen from './screens/Home/HomeScreen';
 import WorkoutScreen from './screens/Workout/WorkoutScreen';
 import CaloriesScreen from './screens/Calories/CaloriesScreen';
@@ -22,40 +24,63 @@ const TabNavigator = () => (
   </Tab.Navigator>
 );
 
-// Create the main Stack Navigator that includes the Settings screen
+// Create the main Stack Navigator
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator 
-        screenOptions={{ headerShown: true }} 
-        initialRouteName="Start" // Ensure this points to StartScreen
-      >
-        {/* StartScreen as the initial screen */}
-        <Stack.Screen name="Start" 
-        component={StartScreen} 
-        options={{ headerShown: false }} 
-        />
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Start"
+          screenOptions={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: '#FFFFFF', // Customize header background
+              height: 50, // Adjust header height for compact design
+            },
+            headerTitleStyle: {
+              fontSize: 18,
+              color: '#000000', // Customize header text color
+            },
+            headerStatusBarHeight: 0, // Adjust for devices with notches
+          }}
+        >
+          {/* Start Screen */}
+          <Stack.Screen
+            name="Start"
+            component={StartScreen}
+            options={{ headerShown: false }}
+          />
 
-        <Stack.Screen name="NewUser" 
-        component={NewUserScreen} 
-        options={{ headerShown: false }} 
-        />
+          {/* New User Screen */}
+          <Stack.Screen
+            name="NewUser"
+            component={NewUserScreen}
+            options={{ headerShown: false }}
+          />
 
-        {/* Main Tab Navigator */}
-        <Stack.Screen
-          name="Home"
-          component={TabNavigator}
-          options={{ headerShown: false }} // Disable header for MainTabs
-        />
+          {/* Main Tab Navigator */}
+          <Stack.Screen
+            name="Home"
+            component={TabNavigator}
+            options={{ headerShown: false }} // Disable header for MainTabs
+          />
 
-        {/* Settings Screen */}
-        <Stack.Screen name="Settings" component={SettingsScreen} />
+          {/* Settings Screen */}
+          <Stack.Screen name="Settings" component={SettingsScreen} />
 
-        {/* Settings Screen */}
-        <Stack.Screen name="Ai" component={AiScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+          {/* AI Screen */}
+          <Stack.Screen name="Ai" component={AiScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 
 export default App;
+
+// Safe styles for reusable layout
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1
+  },
+});
