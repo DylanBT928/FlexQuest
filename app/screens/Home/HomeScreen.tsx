@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
-import { View, Button, StyleSheet, Text,TouchableOpacity } from 'react-native';
+import { View, Button, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 interface State {
   strength: number;
@@ -48,7 +48,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [state, dispatch] = useReducer(stateReducer, initialState);
 
   const MAX_VALUE = 100; // Assume the max value for each category is 100
+  const MAX_LEVEL = 500; // Max level value
   const calculateProgress = (value: number) => value / MAX_VALUE;
+  const calculateLevelProgress = () => {
+    const totalStats = state.strength + state.dexterity + state.intelligence + state.faith + state.arcane;
+    return totalStats / MAX_LEVEL; // Normalize to the level range
+  };
 
   useEffect(() => {
     // Set the header options when the screen mounts
@@ -104,7 +109,24 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           </View>
         </View>
       ))}
+      
       <Button title="Respec" onPress={() => dispatch({ type: "respec" })} />
+
+      {/* Level Progress Bar */}
+      <View style={styles.levelContainer}>
+        <Text style={styles.levelLabel}>Level</Text>
+        <View style={styles.levelProgressBar}>
+          <View
+            style={[
+              styles.progressFill,
+              {
+                width: `${Math.min(calculateLevelProgress() * 100, 100)}%`, // Limit to 100%
+                backgroundColor: '#FF5722', // Orange color for level
+              },
+            ]}
+          />
+        </View>
+      </View>
     </View>
   );
 };
@@ -140,7 +162,7 @@ const styles = StyleSheet.create({
   },
   progressFill: {
     height: '100%',
-    backgroundColor: '#4caf50', // Green color for the bar
+    backgroundColor: '#4caf50', // Green color for the stat bars
     borderRadius: 10,
   },
   plusButton: {
@@ -154,6 +176,22 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  levelContainer: {
+    width: '80%',
+    marginTop: 20,
+  },
+  levelLabel: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 4,
+    textAlign: 'center',
+  },
+  levelProgressBar: {
+    height: 30, // Height of the level progress bar
+    backgroundColor: '#e0e0e0', // Light gray background
+    borderRadius: 15, // Rounded corners
+    overflow: 'hidden',
   },
 });
 
