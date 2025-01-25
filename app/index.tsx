@@ -26,14 +26,21 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator 
-        screenOptions={{ headerShown: false }} 
+        screenOptions={{ headerShown: true }} 
         initialRouteName="Start" // Ensure this points to StartScreen
       >
         {/* StartScreen as the initial screen */}
-        <Stack.Screen name="Start" component={StartScreen} />
+        <Stack.Screen name="Start" 
+        component={StartScreen} 
+        options={{ headerShown: false }} 
+        />
 
         {/* Main Tab Navigator */}
-        <Stack.Screen name="MainTabs" component={TabNavigator} />
+        <Stack.Screen
+          name="Home"
+          component={TabNavigator}
+          options={{ headerShown: false }} // Disable header for MainTabs
+        />
 
         {/* Settings Screen */}
         <Stack.Screen name="Settings" component={SettingsScreen} />

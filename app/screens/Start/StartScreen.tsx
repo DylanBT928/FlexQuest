@@ -62,7 +62,7 @@ const StartScreen = ({ navigation }: { navigation: any }) => {
           if (insertError) throw insertError;
 
           Alert.alert('Success', 'Account created successfully!');
-          navigation.replace('MainTabs'); // Navigate to the main app
+          navigation.replace('Home'); // Navigate to the main app
         }
       } else {
         // Check if username and password match
@@ -78,7 +78,7 @@ const StartScreen = ({ navigation }: { navigation: any }) => {
           Alert.alert('Error', 'Invalid username or password.');
         } else {
           Alert.alert('Success', 'Login successful!');
-          navigation.replace('MainTabs'); // Navigate to the main app
+          navigation.replace('Home'); // Navigate to the main app
         }
       }
     } catch (error) {
