@@ -17,10 +17,12 @@
   "dependencies": {
     "@expo/server": "^0.5.1",
     "@expo/vector-icons": "^14.0.2",
+    "@react-native-community/checkbox": "^0.5.17",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.14",
     "@react-navigation/native-stack": "^7.2.0",
     "@react-navigation/stack": "^7.1.1",
+    "@supabase/supabase-js": "^2.48.1",
     "expo": "^52.0.27",
     "expo-blur": "~14.0.2",
     "expo-constants": "~17.0.4",

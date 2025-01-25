@@ -2,10 +2,11 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './screens/Home/HomeScreen';  // Correct import path
-import WorkoutScreen from './screens/Workout/WorkoutScreen';  // Correct import path
-import CaloriesScreen from './screens/Calories/CaloriesScreen';  // Correct import path
-import SettingsScreen from './screens/Settings/SettingsScreen';  // Correct import path
+import HomeScreen from './screens/Home/HomeScreen';
+import WorkoutScreen from './screens/Workout/WorkoutScreen';
+import CaloriesScreen from './screens/Calories/CaloriesScreen';
+import SettingsScreen from './screens/Settings/SettingsScreen';
+import StartScreen from './screens/Start/StartScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -23,11 +24,17 @@ const TabNavigator = () => (
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* Main Tab Navigator as the first screen */}
+      <Stack.Navigator 
+        screenOptions={{ headerShown: false }} 
+        initialRouteName="Start" // Ensure this points to StartScreen
+      >
+        {/* StartScreen as the initial screen */}
+        <Stack.Screen name="Start" component={StartScreen} />
+
+        {/* Main Tab Navigator */}
         <Stack.Screen name="MainTabs" component={TabNavigator} />
-        
-        {/* Settings screen as a separate screen in the Stack */}
+
+        {/* Settings Screen */}
         <Stack.Screen name="Settings" component={SettingsScreen} />
       </Stack.Navigator>
     </NavigationContainer>

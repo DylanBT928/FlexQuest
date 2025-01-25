@@ -4,4 +4,5 @@ export type RootTabParamList = {
   Workout: undefined;
   Calories: undefined;
   Settings: undefined;  
+  Start: undefined;
 };
