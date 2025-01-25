@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../types'; // Adjusted path
+import { RootStackParamList } from '../../types'; // Correct import path
 
 type SecondScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Second'>;
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Button, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../types'; // Adjusted path
+import { RootStackParamList } from '../../types'; // Correct import path
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
