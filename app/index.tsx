@@ -136,7 +136,7 @@ const App = () => {
             <Stack.Screen name="AI" component={AiScreen} />
 
             {/* Workout Log Screen */}
-            <Stack.Screen name="WorkoutLog" component={WorkoutLog} />
+            <Stack.Screen name="WorkoutLog" component={WorkoutLogScreen} />
             
           </Stack.Navigator>
         </NavigationContainer>
