@@ -1,257 +1,237 @@
-import React, {useEffect} from 'react';
-import {useState, useCallback} from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert} from 'react-native';
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 
-import { createClient } from '@supabase/supabase-js';
-import {useUser} from '../Contexts/Usercontext'
+import { createClient } from "@supabase/supabase-js";
+import { useUser } from "../Contexts/Usercontext";
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import StartScreen from './StartScreen';
-
-
-const Stack = createStackNavigator();
-
-// const App = () => {
-//   return (
-//     <NavigationContainer>
-//       <Stack.Navigator initialRouteName="SettingsScreen">
-//         <Stack.Screen name='Start' component={Start} />
-//         <Stack.Screen name='SettingsScreen' component={SettingsScreen} />
-//       </Stack.Navigator>
-//     </NavigationContainer>
-//   );
-// };
-
-// Initialize Supabase client
-const SUPABASE_URL = 'https://lifotcdgyxayvtxvjjmr.supabase.co'
+const SUPABASE_URL = "https://lifotcdgyxayvtxvjjmr.supabase.co";
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpZm90Y2RneXhheXZ0eHZqam1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc3ODkwNDcsImV4cCI6MjA1MzM2NTA0N30.1_mUwKiJdFWHkK3zy6Y8MGFoMRlLH6W8hlqEmpVxBgI'
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-interface State {
-    weight: number;
-    heightFt: string;
-    sex: number;
-  }
-  
-type CounterAction =
-| { type: "setWeight"; value: number }
-| { type: "setHeightFt"; value: string }
-| { type: "setSex"; value: number };
+const SettingsScreen = ({ navigation }: { navigation: any }) => {
+  const { user } = useUser();
+  const [heightFt, setHeightFt] = useState("");
+  const [heightIn, setHeightIn] = useState("");
+  const [weight, setWeight] = useState("");
+  const [sex, setSex] = useState("");
+  const [loading, setLoading] = useState(false);
 
-// Logging Out Stuff
-interface LogoutButtonProps {
-    onLogout: () => void;
-  }
-
-  const LogoutButton: React.FC<LogoutButtonProps> = ({ onLogout }) => {
-    const handleLogout = () => {
-      // Trigger logout logic
-      Alert.alert("Logged Out", "You have been logged out successfully!");
-      onLogout();
-    };
-
-    return (
-      <TouchableOpacity style={styles.button} onPress={handleLogout}>
-        <Text style={styles.logoutText}>Log Out</Text>
-      </TouchableOpacity>
-    );
+  const handleLogout = () => {
+    navigation.navigate("Start");
+    Alert.alert("Goodbye!", "You have been successfully logged out.");
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from("User")
+          .select("heightFt, heightIn, weight, sex")
+          .eq("username", user?.username)
+          .single();
 
-
-const SettingsScreen = ({ navigation }: { navigation: any }) => {
-    const {user} = useUser();
-    const [height, setHeight] = useState("Height");
-    const [weight, setWeight] = useState("Weight");
-    const [sex, setSex] = useState("Sex");
-    const [loading, setLoading] = useState(false); // Loading state
-    const handleLogout = () => {
-        // Extra steps to log out
-        navigation.navigate('Start'); // Go back to the login screen
-        Alert.alert("Goodbye!", "You have been successfully logged out.");
-    }
-    
-    useEffect(() => {
-        const fetchData = async () => {
-          setLoading(true);
-    
-          try {
-            const { data, error } = await supabase
-              .from('User') // Assuming you have a "user_stats" table
-              .select('heightFt, weight')
-              .eq('username', user?.username)
-              .single(); // Assuming you're fetching one record
-    
-            if (error) {
-              console.error('Error fetching data:', error.message);
-              // If an error occurs or no data is found, populate with default values
-              setHeight('Unknown');
-              setWeight('Unknown');
-              setSex('Unknown');
-            } else {
-                // If data is found, set it
-                console.log('Fetched data:', data);
-                setHeight(data.heightFt || 'Unknown');
-                setWeight(data.weight || 'Unknown');
-                // setSex(data.sex || 'Unknown');
-                }
-            } catch (error) {
-                console.error('Unexpected error:', error);
-                setHeight('Unknown');
-                setWeight('Unknown');
-                setSex('Unknown');
-            } finally {
-                setLoading(false);
-            }
-        };
-        
-        fetchData();
-        }, [user?.username]); // Dependency array to run on mount and when username changes
-
-    function handleHeight(text: string) {
-        setHeight(text);
-    }
-    function handleWeight(text: string) {
-        setWeight(text);
-    }
-    function handleSex(text: string) {
-        setSex(text);
-    }
-
-    const handleSaveChanges = async () => {
-        // Save changes to Supabase
-        const { error } = await supabase
-          .from('User')
-          .update({ heightFt: height, weight: weight})
-          .eq('username', user?.username);
-          Alert.alert('Success', 'Changes saved successfully.');
+        if (error) {
+          console.error("Error fetching data:", error.message);
+          setHeightFt("");
+          setHeightIn("");
+          setWeight("");
+          setSex("");
+        } else {
+          setHeightFt(data?.heightFt || "");
+          setHeightIn(data?.heightIn || "");
+          setWeight(data?.weight || "");
+          setSex(data?.sex || "");
+        }
+      } catch (err) {
+        console.error("Unexpected error:", err);
+      } finally {
+        setLoading(false);
+      }
     };
+    fetchData();
+  }, [user?.username]);
+
+  const handleSaveChanges = async () => {
+    const { error } = await supabase
+      .from("User")
+      .update({
+        heightFt,
+        heightIn,
+        weight,
+        sex,
+      })
+      .eq("username", user?.username);
+
+    if (!error) {
+      Alert.alert("Success", "Changes saved successfully.");
+    } else {
+      Alert.alert("Error", "Failed to save changes.");
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#007bff" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
-      <Text style = {{fontSize: 20}}>User Settings</Text>
-    {/* Height Text Box */}
-    <View style={styles.inputRow}> 
-        <TextInput
-        style={styles.input}
-        // value={height}
-        onChangeText={handleHeight}
-        placeholder="Enter Height..."
-        placeholderTextColor="gray"
-      />
-        <Text style={styles.heightText}>{height}</Text>
-        </View>
-    {/* Weight Text Box  */}
-    <View style={styles.inputRow}> 
-        <TextInput
-        style={styles.input}
-        // value={weight}
-        onChangeText={handleWeight}
-        placeholder="Enter Weight..."
-        placeholderTextColor="gray"
-      />
-        <Text style={styles.weightText}>{weight}</Text>
-        </View>
+      <Text style={styles.title}>User Settings</Text>
 
-    {/* Sex Text Box  */}
-    <View style={styles.inputRow}> 
-        <TextInput
-        style={styles.input}
-        // value={sex}
-        onChangeText={handleSex}
-        placeholder="Enter Sex..."
-        placeholderTextColor="gray"
-      />
-        <Text style={styles.sexText}>{sex}</Text>
+      <View style={styles.card}>
+        {/* Height Section */}
+        <Text style={styles.label}>Height</Text>
+        <View style={styles.inputRow}>
+          <TextInput
+            style={styles.input}
+            value={heightFt}
+            onChangeText={setHeightFt}
+            placeholder="Feet"
+            keyboardType="numeric"
+            placeholderTextColor="gray"
+          />
+          <TextInput
+            style={styles.input}
+            value={heightIn}
+            onChangeText={setHeightIn}
+            placeholder="Inches"
+            keyboardType="numeric"
+            placeholderTextColor="gray"
+          />
         </View>
+      </View>
 
-    <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleSaveChanges}>
-            <Text style={styles.saveChangesText}>Save Changes</Text>
+      <View style={styles.card}>
+        {/* Weight Section */}
+        <Text style={styles.label}>Weight</Text>
+        <TextInput
+          style={styles.inputFull}
+          value={weight}
+          onChangeText={setWeight}
+          placeholder="Enter Weight..."
+          keyboardType="numeric"
+          placeholderTextColor="gray"
+        />
+      </View>
+
+      <View style={styles.card}>
+        {/* Sex Section */}
+        <Text style={styles.label}>Sex</Text>
+        <TextInput
+          style={styles.inputFull}
+          value={sex}
+          onChangeText={setSex}
+          placeholder="Enter Sex..."
+          placeholderTextColor="gray"
+        />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.saveButton} onPress={handleSaveChanges}>
+          <Text style={styles.saveButtonText}>Save Changes</Text>
         </TouchableOpacity>
-    </View>
-
-    <View style={styles.container}>
-        <TouchableOpacity style={styles.button} onPress={handleLogout}>
-            <Text style={styles.logoutText}>Log Out</Text>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Text style={styles.logoutButtonText}>Log Out</Text>
         </TouchableOpacity>
+      </View>
     </View>
-
-    </View> 
   );
 };
 
-
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    inputRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between', // Adjust spacing between label and input
-      alignItems: 'center',
-      marginVertical: 10,
-      width: "90%", // Adjust width to fit better on mobile
-    },
-    input: {
-      height: 40,
-      borderColor: "black",
-      borderWidth: 1, // Add a border to the input
-      borderRadius: 5, // Rounded corners for the input
-      paddingHorizontal: 10, // Add padding inside the input
-      width: '50%', // Adjust width to scale properly
-      backgroundColor: '#f9f9f9', // Light background for better visibility
-    },
-    heightText: {
-      fontSize: 16,
-      textAlign: 'right', // Align text to the left for better spacing
-      marginRight: 10, // Add margin between text and input
-      width: '40%', // Ensure text label takes up proper space
-    },
-    weightText: {
-      fontSize: 16,
-      textAlign: 'right', // Align text to the left for better spacing
-      marginRight: 10, // Add margin between text and input
-      width: '40%', // Ensure text label takes up proper space
-    },
-    sexText: {
-      fontSize: 16,
-      textAlign: 'right', // Align text to the left for better spacing
-      marginRight: 10, // Add margin between text and input
-      width: '40%', // Ensure text label takes up proper space
-    },
-    button: {
-      paddingVertical: 10,
-      paddingHorizontal: 10,
-      backgroundColor: "#007bff",
-      borderRadius: 8,
-    },
-    logoutText: {
-      fontSize: 18,
-      color: "#fff",
-      fontWeight: "bold",
-      textAlign: "center",
-    },
-    saveChangesText: {
-      fontSize: 12,
-      color: "#fff",
-      fontWeight: "bold",
-      textAlign: "right",
-    },
-    buttonContainer: {
-      alignItems: 'flex-end',
-      marginTop: 10,
-      width: '90%',
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-    },
-  });
-  
-
+  container: {
+    flex: 1,
+    backgroundColor: "#f2f2f2",
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  card: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 15,
+    marginVertical: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#555",
+    marginBottom: 10,
+  },
+  inputRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    borderColor: "#ddd",
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginRight: 10,
+    backgroundColor: "#f9f9f9",
+  },
+  inputFull: {
+    height: 40,
+    borderColor: "#ddd",
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    backgroundColor: "#f9f9f9",
+  },
+  buttonContainer: {
+    marginTop: 20,
+  },
+  saveButton: {
+    backgroundColor: "#007bff",
+    paddingVertical: 12,
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+  saveButtonText: {
+    textAlign: "center",
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  logoutButton: {
+    backgroundColor: "#ff4d4d",
+    paddingVertical: 12,
+    borderRadius: 8,
+  },
+  logoutButtonText: {
+    textAlign: "center",
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default SettingsScreen;
-
-
