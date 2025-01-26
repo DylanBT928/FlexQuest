@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Dimensions, ActivityIndicator } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Bar } from 'react-native-progress';
+import { useUser } from '../Contexts/Usercontext';
 import { createClient } from '@supabase/supabase-js';
+
 
 // Initialize Supabase client
 const SUPABASE_URL = 'https://lifotcdgyxayvtxvjjmr.supabase.co'
@@ -13,7 +15,7 @@ const CaloriesScreen = () => {
   const [selectedDate, setSelectedDate] = useState<string>(''); // Store selected date
   const [data, setData] = useState<any | null>(null); // Store fetched data
   const [loading, setLoading] = useState(false); // Loading state
-  const username = 'user123'; // Replace with the actual username (or fetch dynamically)
+  const { user } = useUser();
   const screenWidth = Dimensions.get('window').width; // Get the screen width
 
   // Get current date in yyyy-mm-dd format
@@ -30,6 +32,9 @@ const CaloriesScreen = () => {
 
   // Fetch data from Supabase
   useEffect(() => {
+    console.log('Username:', user?.username);
+    console.log('Selected Date:', selectedDate);
+
     const fetchData = async () => {
       if (!selectedDate) {
         setData(null);
@@ -42,7 +47,7 @@ const CaloriesScreen = () => {
           .from('Calories')
           .select('calories_lost, protein, carbs')
           .eq('date', selectedDate)
-          .eq('username', username)
+          .eq('username', String(user?.username))
           .single();
   
         if (error) {
