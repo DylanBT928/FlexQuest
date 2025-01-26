@@ -18,7 +18,7 @@ Welcome to **FlexQuest**, a health application that gamifies your fitness journe
 
 ## Tech Stack
 
-- **Frontend**: [React](https://reactjs.org/) + [TailwindCSS](https://tailwindcss.com/)
+- **Frontend**: [React](https://reactjs.org/)
 - **Backend**: [TypeScript](https://www.typescriptlang.org/)
 - **Database**: [Supabase](https://supabase.com)
 - **Hosting**: [Expo Go](https://expo.dev/go)
