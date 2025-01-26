@@ -7,4 +7,5 @@ export type RootTabParamList = {
   Start: undefined;
   NewUser: undefined;
   Ai: undefined;
+  WorkoutLog: undefined;
 };
