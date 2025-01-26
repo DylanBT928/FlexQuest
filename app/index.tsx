@@ -11,7 +11,7 @@ import SettingsScreen from './screens/SettingsScreen';
 import StartScreen from './screens/StartScreen';
 import NewUserScreen from './screens/NewUserScreen';
 import AiScreen from './screens/AiScreen';
-import WorkoutLog from './screens/WorkoutLogScreen';
+import WorkoutLogScreen from './screens/WorkoutLogScreen';
 import { UserProvider } from './Contexts/Usercontext';
 
 
@@ -75,9 +75,8 @@ const App = () => {
             {/* AI Screen */}
             <Stack.Screen name="Ai" component={AiScreen} />
 
-            {/* Workout Log Screen */}
-            <Stack.Screen name="WorkoutLog" component={WorkoutLog} />
-            
+            <Stack.Screen name="WorkoutLog" component={WorkoutLogScreen} />
+
           </Stack.Navigator>
         </NavigationContainer>
       </UserProvider>
