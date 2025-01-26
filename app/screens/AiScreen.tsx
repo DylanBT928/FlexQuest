@@ -17,7 +17,8 @@ const AiScreen = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${'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'}`,
+            // Authorization: `Bearer ${'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'}`,
+            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
             "Content-Type": "application/json",
           },
         }
