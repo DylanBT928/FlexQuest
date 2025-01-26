@@ -11,10 +11,8 @@ import SettingsScreen from './screens/SettingsScreen';
 import StartScreen from './screens/StartScreen';
 import NewUserScreen from './screens/NewUserScreen';
 import AiScreen from './screens/AiScreen';
-<<<<<<< HEAD
 import { UserProvider } from './Contexts/Usercontext';
-=======
->>>>>>> 5a472d6927abb559890ef1dfef13a3e5023fa1a5
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();

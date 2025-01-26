@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import { View, Button, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
+import {useUser} from '../Contexts/Usercontext'
 
 // Initialize Supabase client
 const SUPABASE_URL = 'https://lifotcdgyxayvtxvjjmr.supabase.co'
@@ -56,6 +57,8 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [levelPoints, setLevelPoints] = useState(0);
   const [levelProgress, setLevelProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true); // Loading state
+  const {user} = useUser();
+  console.log(user!.username); 
 
   const MAX_LEVEL = 100;
   const MAX_VALUE = 50;
@@ -69,7 +72,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
         const { data, error } = await supabase
           .from('RPGStats') // Assuming you have a "user_stats" table
           .select('strength, dexterity, intelligence, faith, arcane, level, levelPoints')
-          .eq('username','Alexis')
+          .eq('username',user?.username)
           .single(); // Assuming you're fetching one record
   
         if (error) {
@@ -127,7 +130,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       const { data, error } = await supabase
         .from('RPGStats') // Replace with your actual table name
         .update({ ...updatedStats, level: updatedLevel, levelPoints: updatedLevelPoints }) // Update fields
-        .eq('username', 'Alexis'); // Assuming 'user_id' is your unique identifier, replace with actual user identifier
+        .eq('username', user!.username); // Assuming 'user_id' is your unique identifier, replace with actual user identifier
   
       if (error) {
         console.error("Error updating user data:", error.message);
@@ -176,7 +179,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           arcane: 0,
           levelPoints: level, // Keep the current levelPoints
         })
-        .eq('username', 'Alexis'); // Assuming 'username' is your unique identifier
+        .eq('username', user!.username); // Assuming 'username' is your unique identifier
     
       if (error) {
         console.error("Error updating user data:", error.message);
