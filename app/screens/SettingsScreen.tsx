@@ -40,8 +40,8 @@ interface LogoutButtonProps {
     };
 
     return (
-      <TouchableOpacity style={styles.button} onPress={handleLogout}>
-        <Text style={styles.logoutText}>Log Out</Text>
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <Text style={styles.logoutButtonText}>Log Out</Text>
       </TouchableOpacity>
     );
   };
@@ -152,7 +152,7 @@ const SettingsScreen = ({ navigation }: { navigation: any }) => {
           style={styles.inputFull}
           value={weight}
           onChangeText={setWeight}
-          placeholder="Enter Weight..."
+          placeholder="Pounds"
           keyboardType="numeric"
           placeholderTextColor="gray"
         />
