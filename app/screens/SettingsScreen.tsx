@@ -12,16 +12,16 @@ import StartScreen from './StartScreen';
 
 const Stack = createStackNavigator();
 
-const App = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="SettingsScreen">
-        <Stack.Screen name='StartScreen' component={StartScreen} />
-        <Stack.Screen name='SettingsScreen' component={SettingsScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
+// const App = () => {
+//   return (
+//     <NavigationContainer>
+//       <Stack.Navigator initialRouteName="SettingsScreen">
+//         <Stack.Screen name='Start' component={Start} />
+//         <Stack.Screen name='SettingsScreen' component={SettingsScreen} />
+//       </Stack.Navigator>
+//     </NavigationContainer>
+//   );
+// };
 
 // Initialize Supabase client
 const SUPABASE_URL = 'https://lifotcdgyxayvtxvjjmr.supabase.co'
@@ -68,7 +68,7 @@ const SettingsScreen = ({ navigation }: { navigation: any }) => {
     const [loading, setLoading] = useState(false); // Loading state
     const handleLogout = () => {
         // Extra steps to log out
-        navigation.navigate('StartScreen'); // Go back to the login screen
+        navigation.navigate('Start'); // Go back to the login screen
         Alert.alert("Goodbye!", "You have been successfully logged out.");
     }
     

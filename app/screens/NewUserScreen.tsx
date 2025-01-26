@@ -81,8 +81,6 @@ const NewUserScreen = ({ navigation }: { navigation: any }) => {
     }
   };
   
-  
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Create Account</Text>
