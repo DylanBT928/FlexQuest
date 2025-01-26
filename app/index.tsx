@@ -39,7 +39,7 @@ const TabNavigator = () => (
         tabBarIcon: ({ size }) => (
           <Image
             source={workoutIcon}
-            style={{ width: 110, height: 110, marginTop: 25, marginLeft: 10 }} // Make the icon bigger
+            style={{ width: 100, height: 55, marginTop: 45, marginLeft: 20 }} // Make the icon bigger
           />
         ),
       }}
@@ -51,7 +51,7 @@ const TabNavigator = () => (
         tabBarIcon: ({ size }) => (
           <Image
             source={homeIcon}
-            style={{ width: 120, height: 120, marginTop: 42 }} // Make the icon bigger
+            style={{ width: 60, height: 60, marginTop: 45 , marginLeft: 10}} // Make the icon bigger
           />
         ),
       }}
@@ -63,7 +63,7 @@ const TabNavigator = () => (
         tabBarIcon: ({ size }) => (
           <Image
             source={caloriesIcon}
-            style={{ width: 72, height: 72, marginTop: 40}} // Make the icon bigger
+            style={{ width: 60, height: 60, marginTop: 45, marginRight: 40}} // Make the icon bigger
           />
         ),
       }}
