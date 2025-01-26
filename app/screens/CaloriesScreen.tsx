@@ -5,6 +5,7 @@ import { Bar } from 'react-native-progress';
 import { useUser } from '../Contexts/Usercontext';
 import { useNavigation } from '@react-navigation/native';
 import { createClient } from '@supabase/supabase-js';
+import CaloriesLogScreen from '../screens/CaloriesLogScreen';
 
 
 // Initialize Supabase client

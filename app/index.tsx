@@ -13,6 +13,7 @@ import StartScreen from './screens/StartScreen';
 import NewUserScreen from './screens/NewUserScreen';
 import AiScreen from './screens/AiScreen';
 import WorkoutLog from './screens/WorkoutLogScreen';
+import CaloriesLog from './screens/CaloriesLogScreen';
 import { UserProvider } from './Contexts/Usercontext';
 
 const Tab = createBottomTabNavigator();
@@ -139,6 +140,9 @@ const App = () => {
 
             {/* Workout Log Screen */}
             <Stack.Screen name="WorkoutLog" component={WorkoutLog} />
+
+            {/* Calories Log Screen */}
+            <Stack.Screen name="CaloriesLog" component={CaloriesLog} />
             
   
         </Stack.Navigator>
