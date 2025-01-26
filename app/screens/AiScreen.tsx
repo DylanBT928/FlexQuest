@@ -17,7 +17,7 @@ const AiScreen = () => {
         },
         {
           headers: {
-            // Authorization: `Bearer ${'sk-proj--QJ1---'}`,
+            // Authorization: `Bearer ${}`,
             Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
             "Content-Type": "application/json",
           },
