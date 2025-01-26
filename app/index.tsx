@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -62,7 +63,23 @@ const App = () => {
           <Stack.Screen
             name="Home"
             component={TabNavigator}
-            options={{ headerShown: false }} // Disable header for MainTabs
+            options={({navigation}) => ({
+                headerShown: false,
+                headerRight: () => (
+                    <>
+                    <Button
+                      onPress={() => navigation.navigate('Settings')}
+                      title="Settings"
+                    />
+                    <Button
+                      onPress={() => navigation.navigate('Ai')}
+                      title="AI"
+                    />
+                  </>
+                ),
+            })}
+                
+                // Disable header for MainTabs
           />
 
           {/* Settings Screen */}
@@ -70,6 +87,7 @@ const App = () => {
 
           {/* AI Screen */}
           <Stack.Screen name="Ai" component={AiScreen} />
+
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
