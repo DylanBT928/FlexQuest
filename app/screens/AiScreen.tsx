@@ -15,6 +15,9 @@ import {
 import axios from "axios";
 import { createClient } from '@supabase/supabase-js';
 import { useUser } from '../Contexts/Usercontext';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
+
 
 const SUPABASE_URL = 'https://lifotcdgyxayvtxvjjmr.supabase.co'
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpZm90Y2RneXhheXZ0eHZqam1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc3ODkwNDcsImV4cCI6MjA1MzM2NTA0N30.1_mUwKiJdFWHkK3zy6Y8MGFoMRlLH6W8hlqEmpVxBgI'
@@ -106,7 +109,6 @@ const AiScreen = () => {
         },
         {
           headers: {
-            
             "Content-Type": "application/json",
           },
         }
@@ -167,13 +169,17 @@ const renderMessage = ({ item }: { item: Message }) => (
     >
       <TouchableWithoutFeedback onPress={dismissKeyboard}>
         <View style={styles.innerContainer}>
-          <FlatList
+          <FlatList 
             data={messages}
             renderItem={renderMessage}
             keyExtractor={(item) => item.id}
             contentContainerStyle={styles.chatContainer}
             showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled" // Allows taps to dismiss the keyboard
+            keyboardDismissMode="on-drag" // Ensures the keyboard dismisses when scrolling
           />
+
+
           {loading && <ActivityIndicator size="large" color="#007bff" style={styles.loader} />}
           <View style={styles.inputContainer}>
             <TextInput
