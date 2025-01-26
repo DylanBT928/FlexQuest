@@ -95,7 +95,7 @@ const AiScreen = () => {
         User Summary:
         ${userSummary.trim()}
         
-        Respond in a friendly and supportive tone, keeping the user's goals and habits in mind. Provide actionable tips for their fitness journey.
+        Respond in a friendly and supportive tone, keeping the user's goals and habits in mind and do not forget to mention rest days if the user needs them. Provide actionable tips for their fitness journey.
       `;
 
       const res = await axios.post(
