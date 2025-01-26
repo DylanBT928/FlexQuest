@@ -293,7 +293,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
         </View>
       ))}
 
-      <Button title="Respec" onPress={handleRespec} />
+      <Button title="Re-Spec" onPress={handleRespec} />
 
       <View style={styles.levelContainer}>
         <Text style={styles.levelLabel}>

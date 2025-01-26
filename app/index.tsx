@@ -13,6 +13,7 @@ import StartScreen from './screens/StartScreen';
 import NewUserScreen from './screens/NewUserScreen';
 import AiScreen from './screens/AiScreen';
 import WorkoutLogScreen from './screens/WorkoutLogScreen';
+import CaloriesLogScreen from './screens/CaloriesLogScreen';
 import { UserProvider } from './Contexts/Usercontext';
 
 
@@ -137,6 +138,9 @@ const App = () => {
 
             {/* Workout Log Screen */}
             <Stack.Screen name="WorkoutLog" component={WorkoutLogScreen} />
+
+            {/* Workout Log Screen */}
+            <Stack.Screen name="CaloriesLog" component={CaloriesLogScreen} />
             
           </Stack.Navigator>
         </NavigationContainer>
