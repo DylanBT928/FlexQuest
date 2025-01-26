@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useState } from 'react';
-import { View, Button, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, Button, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
-import {useUser} from '../Contexts/Usercontext'
+import { useUser } from '../Contexts/Usercontext'
 
 
 // Initialize Supabase client
@@ -48,13 +48,13 @@ function stateReducer(state: State, action: CounterAction): State {
     case "setArcane":
       return { ...state, arcane: action.value };
     default:
-      throw new Error("Unknown action.");
+      return state;
   }
 }
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [state, dispatch] = useReducer(stateReducer, initialState);
-  const [level, setLevel] = useState(0);
+  const [level, setLevel] = useState(1); // State to manage player's level
   const [levelPoints, setLevelPoints] = useState(0);
   const [levelProgress, setLevelProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true); // Loading state
@@ -271,6 +271,17 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <View style={styles.container}>
+      {Object.keys(state).map((lebron) => (
+        <View style={styles.lebron}>
+        <Image
+          source={require('../../assets/images/lebron.png')}
+          style={{
+            width: 50 + level * 30, // Increase width as the player gains levels
+            height: 50 + level * 30, // Increase height as the player gains levels
+            marginLeft: 40
+          }}
+        />
+      </View>))}
       {Object.keys(state).map((stat) => (
         <View key={stat} style={styles.progressContainer}>
           <Text style={styles.label}>{stat.toUpperCase()}</Text>
@@ -384,6 +395,11 @@ const styles = StyleSheet.create({
   levelPoints: {
     fontSize: 18,
     marginTop: 10,
+  },
+  lebron: {
+    position: 'absolute',
+    flex: 1,
+    resizeMode: 'stretch',
   },
 });
 
