@@ -100,15 +100,15 @@ const CaloriesScreen = () => {
           <View style={styles.progressContainer}>
             <View style={styles.progressBar}>
               <Text>Calories: {data.calories} / 2000</Text>
-              <Bar progress={data.calories / 2000} width={screenWidth * 0.8} color="orange" />
+              <Bar progress={data.calories / 2000} width={screenWidth * 0.8} height={screenWidth * 0.025} color="orange" />
             </View>
             <View style={styles.progressBar}>
               <Text>Protein: {data.protein} / 150g</Text>
-              <Bar progress={data.protein / 150} width={screenWidth * 0.8} color="blue" />
+              <Bar progress={data.protein / 150} width={screenWidth * 0.8} height={screenWidth * 0.025} color="blue" />
             </View>
             <View style={styles.progressBar}>
               <Text>Carbs: {data.carbs} / 300g</Text>
-              <Bar progress={data.carbs / 300} width={screenWidth * 0.8} color="green" />
+              <Bar progress={data.carbs / 300} width={screenWidth * 0.8} height={screenWidth * 0.025} color="green" />
             </View>
           </View>
         ) : (
