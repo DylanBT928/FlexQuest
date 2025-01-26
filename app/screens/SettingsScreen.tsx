@@ -9,19 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import StartScreen from './StartScreen';
 
-
 const Stack = createStackNavigator();
-
-// const App = () => {
-//   return (
-//     <NavigationContainer>
-//       <Stack.Navigator initialRouteName="SettingsScreen">
-//         <Stack.Screen name='Start' component={Start} />
-//         <Stack.Screen name='SettingsScreen' component={SettingsScreen} />
-//       </Stack.Navigator>
-//     </NavigationContainer>
-//   );
-// };
 
 // Initialize Supabase client
 const SUPABASE_URL = 'https://lifotcdgyxayvtxvjjmr.supabase.co'
@@ -44,21 +32,19 @@ interface LogoutButtonProps {
     onLogout: () => void;
   }
 
-  const LogoutButton: React.FC<LogoutButtonProps> = ({ onLogout }) => {
-    const handleLogout = () => {
-      // Trigger logout logic
-      Alert.alert("Logged Out", "You have been logged out successfully!");
-      onLogout();
-    };
+//   const LogoutButton: React.FC<LogoutButtonProps> = ({ onLogout }) => {
+//     // const handleLogout = () => {
+//     //   // Trigger logout logic
+//     //   Alert.alert("Logged Out", "You have been logged out successfully!");
+//     //   onLogout();
+//     // };
 
-    return (
-      <TouchableOpacity style={styles.button} onPress={handleLogout}>
-        <Text style={styles.logoutText}>Log Out</Text>
-      </TouchableOpacity>
-    );
-  };
-
-
+//     return (
+//       <TouchableOpacity style={styles.button} onPress={handleLogout}>
+//         <Text style={styles.logoutText}>Log Out</Text>
+//       </TouchableOpacity>
+//     );
+//   };
 
 const SettingsScreen = ({ navigation }: { navigation: any }) => {
     const {user} = useUser();
