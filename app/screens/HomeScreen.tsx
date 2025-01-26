@@ -3,6 +3,7 @@ import { View, Button, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
 import {useUser} from '../Contexts/Usercontext'
 
+
 // Initialize Supabase client
 const SUPABASE_URL = 'https://lifotcdgyxayvtxvjjmr.supabase.co'
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpZm90Y2RneXhheXZ0eHZqam1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc3ODkwNDcsImV4cCI6MjA1MzM2NTA0N30.1_mUwKiJdFWHkK3zy6Y8MGFoMRlLH6W8hlqEmpVxBgI'
@@ -65,6 +66,23 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   const calculateProgress = (value: number) => value / MAX_VALUE;
 
   useEffect(() => {
+    navigation.setOptions({
+        headerRight: () => (
+            <View style={{ flexDirection: 'row' }}>
+            <Button 
+              title="AI"
+              onPress={() => navigation.navigate('AI')}  // Navigate to AI
+            />
+            <Button 
+              title="Settings"
+              onPress={() => navigation.navigate('Settings')}  // Navigate to Settings
+            />
+          </View>
+        ),
+      });
+    }, [navigation]);
+
+    useEffect(() => {
     const loadUserData = async () => {
       try {
         // Fetch the user data from Supabase

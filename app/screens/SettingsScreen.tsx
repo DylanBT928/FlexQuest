@@ -1,6 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useState, useCallback} from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert} from 'react-native';
+
+import { createClient } from '@supabase/supabase-js';
+import {useUser} from '../Contexts/Usercontext'
+
+// Initialize Supabase client
+const SUPABASE_URL = 'https://lifotcdgyxayvtxvjjmr.supabase.co'
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpZm90Y2RneXhheXZ0eHZqam1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc3ODkwNDcsImV4cCI6MjA1MzM2NTA0N30.1_mUwKiJdFWHkK3zy6Y8MGFoMRlLH6W8hlqEmpVxBgI'
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Logging Out Stuff
 interface LogoutButtonProps {
@@ -22,9 +30,7 @@ interface LogoutButtonProps {
   };
 
 const SettingsScreen = ({ navigation }: { navigation: any }) => {
-    const [user, setUser] = useState("User");
-    const [email, setEmail] = useState("Email");
-    const [password, setPassword] = useState("Password");
+    const {user} = useUser();
     const [height, setHeight] = useState("Height");
     const [weight, setWeight] = useState("Weight");
     const [sex, setSex] = useState("Sex");
@@ -33,16 +39,22 @@ const SettingsScreen = ({ navigation }: { navigation: any }) => {
         Alert.alert("Goodbye!", "You have been successfully logged out.");
         navigation.navigate("LoginScreen"); // Go back to the login screen
     }
+    
+    useEffect(() => {
+    const loadUserData = async () => {
+        // Fetch the user data from Supabase
+        const { data, error } = await supabase
+          .from('RPGStats') // Assuming you have a "user_stats" table
+          .select('strength, dexterity, intelligence, faith, arcane, level, levelPoints,levelProgress')
+          .eq('username',user?.username)
+          .single(); // Assuming you're fetching one record
+        //   setUserData(data);
+        //   setIsLoading(false);
+    };
 
-    function handleUser(text: string) {
-        setEmail(text);
-    }
-    function handleEmail(text: string) {
-        setEmail(text);
-    }
-    function handlePassword(text: string) {
-        setPassword(text);
-    }
+          loadUserData();
+        }, [user?.username]); // Empty dependency array to run on mount
+
     function handleHeight(text: string) {
         setHeight(text);
     }
@@ -56,40 +68,6 @@ const SettingsScreen = ({ navigation }: { navigation: any }) => {
   return (
     <View style={styles.container}>
       <Text style = {{fontSize: 20}}>User Settings</Text>
-    {/* User Text Boxes */}
-    <View style={styles.inputRow}> 
-      <TextInput
-        style={styles.input}
-        // value={user}
-        onChangeText={handleUser}
-        placeholder="Enter Username..."
-      />
-        <Text style={styles.userText}>{user}</Text>
-        </View>
-
-    {/* Email Text Boxes */}
-    <View style={styles.inputRow}> 
-      <TextInput
-        style={styles.input}
-        // value={email}
-        onChangeText={handleEmail}
-        placeholder="Enter Email..."
-      />
-        <Text style={styles.emailText}>{email}</Text>
-        </View>
-
-    {/* Password Text Boxes */}
-    <View style={styles.inputRow}> 
-        <TextInput
-        style={styles.input}
-        // value={password}
-        onChangeText={handlePassword}
-        placeholder="Enter Password..."
-      />
-        <Text style={styles.passwordText}>{password}</Text>
-        </View>
-
-    <Text style = {{fontSize: 20}}>Stats</Text>
 
     {/* Height Text Box */}
     <View style={styles.inputRow}> 
