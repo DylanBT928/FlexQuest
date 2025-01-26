@@ -12,6 +12,7 @@ const NewUserScreen = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [equipment, setEquipment] = useState('');
+  const [sex, setSex] = useState('');
   const [heightFt, setHeightFt] = useState('');
   const [heightIn, setHeightIn] = useState('');
   const [weight, setWeight] = useState('');
@@ -35,6 +36,7 @@ const NewUserScreen = ({ navigation }: { navigation: any }) => {
     }
   
     // Ensure that number fields are null if empty
+    const finalSex = sex ? sex : null;
     const finalHeightFt = heightFt ? Number(heightFt) : null;
     const finalHeightIn = heightIn ? Number(heightIn) : null;
     const finalWeight = weight ? Number(weight) : null;
@@ -62,7 +64,8 @@ const NewUserScreen = ({ navigation }: { navigation: any }) => {
           { 
             username, 
             password, 
-            equipment, 
+            equipment,
+            sex: finalSex,
             heightFt: finalHeightFt, 
             heightIn: finalHeightIn, 
             weight: finalWeight, 
@@ -110,32 +113,43 @@ const NewUserScreen = ({ navigation }: { navigation: any }) => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Height (Ft):"
+        placeholder="Sex (Optional):"
         placeholderTextColor="#888" // Set placeholder color
-        value={heightFt}
-        onChangeText={setHeightFt}
+        value={sex}
+        onChangeText={setSex}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Height (In):"
-        placeholderTextColor="#888" // Set placeholder color
-        value={heightIn}
-        onChangeText={setHeightIn}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Weight:"
-        placeholderTextColor="#888" // Set placeholder color
-        value={weight}
-        onChangeText={setWeight}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Goal Weight (Optional):"
-        placeholderTextColor="#888" // Set placeholder color
-        value={goalWeight}
-        onChangeText={setGoalWeight}
-      />
+      <View style={styles.row}>
+        <TextInput
+          style={[styles.input, styles.halfInput]}
+          placeholder="Height (ft)"
+          placeholderTextColor="#888"
+          value={heightFt}
+          onChangeText={setHeightFt}
+        />
+        <TextInput
+          style={[styles.input, styles.halfInput]}
+          placeholder="Height (in)"
+          placeholderTextColor="#888"
+          value={heightIn}
+          onChangeText={setHeightIn}
+        />
+      </View>
+      <View style={styles.row}>
+        <TextInput
+          style={[styles.input, styles.halfInput]}
+          placeholder="Weight (lbs)"
+          placeholderTextColor="#888"
+          value={weight}
+          onChangeText={setWeight}
+        />
+        <TextInput
+          style={[styles.input, styles.halfInput]}
+          placeholder="Goal Weight (Optionsl)"
+          placeholderTextColor="#888"
+          value={goalWeight}
+          onChangeText={setGoalWeight}
+        />
+      </View>
       <TextInput
         style={styles.input}
         placeholder="Time Frame (Optional):"
@@ -163,13 +177,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   input: {
+    width: '100%',
+    padding: 8,
+    marginVertical: 8,
     borderWidth: 1,
     borderColor: '#ccc',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 5,
-    fontSize: 16,
-    color: '#333', // Ensure input text is visible
+    borderRadius: 4,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  halfInput: {
+    width: '48%',
   },
 });
 
