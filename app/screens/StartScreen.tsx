@@ -44,6 +44,8 @@ const StartScreen = ({ navigation }: { navigation: any }) => {
       } else {
         setUser({ username });
         Alert.alert('Success', 'Login successful!');
+        let globalVar = username; // global variable
+
         navigation.replace('Home'); // Navigate to the main app
       }
     };
