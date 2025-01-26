@@ -58,7 +58,6 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [levelProgress, setLevelProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const {user} = useUser();
-  console.log(user!.username); 
 
   const MAX_LEVEL = 100;
   const MAX_VALUE = 50;
@@ -71,7 +70,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
         // Fetch the user data from Supabase
         const { data, error } = await supabase
           .from('RPGStats') // Assuming you have a "user_stats" table
-          .select('strength, dexterity, intelligence, faith, arcane, level, levelPoints')
+          .select('strength, dexterity, intelligence, faith, arcane, level, levelPoints,levelProgress')
           .eq('username',user?.username)
           .single(); // Assuming you're fetching one record
   
@@ -82,7 +81,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   
         // If the user data exists, initialize state with it
         if (data) {
-          const { strength, dexterity, intelligence, faith, arcane, level, levelPoints } = data;
+          const { strength, dexterity, intelligence, faith, arcane, level, levelPoints,levelProgress } = data;
           dispatch({ type: "setStrength", value: strength });
           dispatch({ type: "setDexterity", value: dexterity });
           dispatch({ type: "setIntelligence", value: intelligence });
@@ -90,6 +89,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           dispatch({ type: "setArcane", value: arcane });
           setLevel(level);
           setLevelPoints(levelPoints);
+          setLevelProgress(levelProgress);
         }
       } catch (error) {
         console.error("Error loading user data:", error); // Log the full error object
@@ -112,6 +112,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   const handleIncreaseLevel = async () => {
     if (levelProgress < 1) {
       setLevelProgress(levelProgress + 0.1); // Increase progress by 10%
+      updateUserData({}, level, levelPoints, levelProgress)
     }
   
     // Update level after progress is maxed out
@@ -121,15 +122,15 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       setLevelPoints(levelPoints + 1); // Increment level points
   
       // Update level and level points in Supabase
-      await updateUserData({}, level + 1, levelPoints + 1); // Empty object for stats as we're only updating level/level points
+      await updateUserData({}, level + 1, levelPoints + 1, 0); // Empty object for stats as we're only updating level/level points
     }
   };
 
-  const updateUserData = async (updatedStats: Partial<State>, updatedLevel: number, updatedLevelPoints: number) => {
+  const updateUserData = async (updatedStats: Partial<State>, updatedLevel: number, updatedLevelPoints: number, updatedLevelProgress: number) => {
     try {
       const { data, error } = await supabase
         .from('RPGStats') // Replace with your actual table name
-        .update({ ...updatedStats, level: updatedLevel, levelPoints: updatedLevelPoints }) // Update fields
+        .update({ ...updatedStats, level: updatedLevel, levelPoints: updatedLevelPoints,levelProgress: updatedLevelProgress }) // Update fields
         .eq('username', user!.username); // Assuming 'user_id' is your unique identifier, replace with actual user identifier
   
       if (error) {
@@ -157,7 +158,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
       // Prepare updated data for Supabase
       const updatedStats: Partial<State> = { [stat]: newValue };
-      await updateUserData(updatedStats, level, levelPoints); // Update the Supabase database
+      await updateUserData(updatedStats, level, levelPoints,levelProgress); // Update the Supabase database
     }
   };
   const handleRespec = async () => {
