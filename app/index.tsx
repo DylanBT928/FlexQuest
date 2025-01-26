@@ -133,7 +133,7 @@ const App = () => {
             <Stack.Screen name="Settings" component={SettingsScreen} />
 
             {/* AI Screen */}
-            <Stack.Screen name="Ai" component={AiScreen} />
+            <Stack.Screen name="AI" component={AiScreen} />
 
             {/* Workout Log Screen */}
             <Stack.Screen name="WorkoutLog" component={WorkoutLog} />
