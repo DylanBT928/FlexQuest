@@ -141,22 +141,52 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
 
   const handleIncreaseStat = async (stat: keyof State) => {
-  if (levelPoints > 0) {
-    // Update the local state (increase the stat)
-    const newValue = state[stat] + 5;
-    dispatch({
-      type: `set${stat.charAt(0).toUpperCase() + stat.slice(1)}` as CounterAction["type"],
-      value: newValue,
-    });
+    if (levelPoints > 0) {
+      // Update the local state (increase the stat)
+      const newValue = state[stat] + 5;
+      dispatch({
+        type: `set${stat.charAt(0).toUpperCase() + stat.slice(1)}` as CounterAction["type"],
+        value: newValue,
+      });
 
-    // Decrease the available level points
-    setLevelPoints(levelPoints - 1);
+      // Decrease the available level points
+      setLevelPoints(levelPoints - 1);
 
-    // Prepare updated data for Supabase
-    const updatedStats: Partial<State> = { [stat]: newValue };
-    await updateUserData(updatedStats, level, levelPoints); // Update the Supabase database
-  }
-};
+      // Prepare updated data for Supabase
+      const updatedStats: Partial<State> = { [stat]: newValue };
+      await updateUserData(updatedStats, level, levelPoints); // Update the Supabase database
+    }
+  };
+  const handleRespec = async () => {
+    // Set levelPoints to current level
+    setLevelPoints(level); 
+  
+    // Reset character stats to 0 in the local state
+    dispatch({ type: 'respec' });
+  
+    // Update stats in Supabase to zero, leaving level and levelPoints unchanged
+    try {
+      const { data, error } = await supabase
+        .from('RPGStats') // Replace with your actual table name
+        .update({
+          strength: 0,
+          dexterity: 0,
+          intelligence: 0,
+          faith: 0,
+          arcane: 0,
+          levelPoints: level, // Keep the current levelPoints
+        })
+        .eq('username', 'Alexis'); // Assuming 'username' is your unique identifier
+    
+      if (error) {
+        console.error("Error updating user data:", error.message);
+        throw error;
+      }
+      console.log("User data successfully updated:", data);
+    } catch (error) {
+      console.error("Error updating user data:", error);
+    }
+  };
 
   // Loading screen or user data
   if (isLoading) {
@@ -191,7 +221,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
         </View>
       ))}
 
-      <Button title="Respec" onPress={() => dispatch({ type: "respec" })} />
+      <Button title="Respec" onPress={handleRespec} />
 
       <View style={styles.levelContainer}>
         <Text style={styles.levelLabel}>
