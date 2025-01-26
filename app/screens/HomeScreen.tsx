@@ -67,31 +67,32 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
   useEffect(() => {
     navigation.setOptions({
-        headerRight: () => (
-            <View style={{ flexDirection: 'row' }}>
-            <Button 
-              title="AI"
-              onPress={() => navigation.navigate('AI')}  // Navigate to AI
-            />
-            <Button 
-              title="Settings"
-              onPress={() => navigation.navigate('Settings')}  // Navigate to Settings
-            />
-          </View>
-        ),
-      });
-    }, [navigation]);
+      headerLeft: () => (
+        <Button 
+          title="AI"
+          onPress={() => navigation.navigate('AI')} // Navigate to AI
+        />
+      ),
+      headerRight: () => (
+        <Button 
+          title="Settings"
+          onPress={() => navigation.navigate('Settings')} // Navigate to Settings
+        />
+      ),
+    });
+  }, [navigation]);
+  
 
-    useEffect(() => {
-      navigation.setOptions({
-        headerRight: () => (
-          <View style={{ flexDirection: 'row' }}>
-            <Button title="AI" onPress={() => navigation.navigate('AI')} />
-            <Button title="Settings" onPress={() => navigation.navigate('Settings')} />
-          </View>
-        ),
-      });
-    }, [navigation]);
+    // useEffect(() => {
+    //   navigation.setOptions({
+    //     headerRight: () => (
+    //       <View style={{ flexDirection: 'row' }}>
+    //         <Button title="AI" onPress={() => navigation.navigate('AI')} />
+    //         <Button title="Settings" onPress={() => navigation.navigate('Settings')} />
+    //       </View>
+    //     ),
+    //   });
+    // }, [navigation]);
   
     useEffect(() => {
       const loadUserData = async () => {

@@ -12,8 +12,7 @@ import SettingsScreen from './screens/SettingsScreen';
 import StartScreen from './screens/StartScreen';
 import NewUserScreen from './screens/NewUserScreen';
 import AiScreen from './screens/AiScreen';
-import WorkoutLogScreen from './screens/WorkoutLogScreen';
-import CaloriesLogScreen from './screens/CaloriesLogScreen';
+import WorkoutLog from './screens/WorkoutLogScreen';
 import { UserProvider } from './Contexts/Usercontext';
 
 
@@ -40,7 +39,7 @@ const TabNavigator = () => (
         tabBarIcon: ({ size }) => (
           <Image
             source={workoutIcon}
-            style={{ width: 100, height: 55, marginTop: 45, marginLeft: 20 }} // Make the icon bigger
+            style={{ width: 110, height: 110, marginTop: 25, marginLeft: 10 }} // Make the icon bigger
           />
         ),
       }}
@@ -52,7 +51,7 @@ const TabNavigator = () => (
         tabBarIcon: ({ size }) => (
           <Image
             source={homeIcon}
-            style={{ width: 60, height: 60, marginTop: 45 , marginLeft: 10}} // Make the icon bigger
+            style={{ width: 120, height: 120, marginTop: 42 }} // Make the icon bigger
           />
         ),
       }}
@@ -64,7 +63,7 @@ const TabNavigator = () => (
         tabBarIcon: ({ size }) => (
           <Image
             source={caloriesIcon}
-            style={{ width: 60, height: 60, marginTop: 45, marginRight: 40}} // Make the icon bigger
+            style={{ width: 72, height: 72, marginTop: 40}} // Make the icon bigger
           />
         ),
       }}
@@ -137,12 +136,10 @@ const App = () => {
             <Stack.Screen name="AI" component={AiScreen} />
 
             {/* Workout Log Screen */}
-            <Stack.Screen name="WorkoutLog" component={WorkoutLogScreen} />
-
-            {/* Workout Log Screen */}
-            <Stack.Screen name="CaloriesLog" component={CaloriesLogScreen} />
+            <Stack.Screen name="WorkoutLog" component={WorkoutLog} />
             
-          </Stack.Navigator>
+  
+        </Stack.Navigator>
         </NavigationContainer>
       </UserProvider>
     </SafeAreaProvider>

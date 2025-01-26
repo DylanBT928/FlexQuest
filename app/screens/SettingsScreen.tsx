@@ -138,6 +138,7 @@ const SettingsScreen = ({ navigation }: { navigation: any }) => {
         // value={height}
         onChangeText={handleHeight}
         placeholder="Enter Height..."
+        placeholderTextColor="gray"
       />
         <Text style={styles.heightText}>{height}</Text>
         </View>
@@ -148,6 +149,7 @@ const SettingsScreen = ({ navigation }: { navigation: any }) => {
         // value={weight}
         onChangeText={handleWeight}
         placeholder="Enter Weight..."
+        placeholderTextColor="gray"
       />
         <Text style={styles.weightText}>{weight}</Text>
         </View>
@@ -159,6 +161,7 @@ const SettingsScreen = ({ navigation }: { navigation: any }) => {
         // value={sex}
         onChangeText={handleSex}
         placeholder="Enter Sex..."
+        placeholderTextColor="gray"
       />
         <Text style={styles.sexText}>{sex}</Text>
         </View>
@@ -181,86 +184,72 @@ const SettingsScreen = ({ navigation }: { navigation: any }) => {
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    // fontSize: 30,
-  },
-  inputRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 10,
-    width: "25%",
-  },
-  input: {
-    height: 40,
-    borderColor: "black",
-    width: '50%',
-  },
-  userText: {
-    flex: 1,
-    fontSize: 16,
-    textAlign: 'right',
-    marginLeft: 10, 
-  },
-  emailText: {
-    flex: 1,
-    fontSize: 16,
-    textAlign: 'right',
-    marginLeft: 10, 
-  },
-  passwordText: {
-    flex: 1,
-    fontSize: 16,
-    textAlign: 'right',
-    marginLeft: 10, 
-  },
-  heightText: {
-    flex: 1,
-    fontSize: 16,
-    textAlign: 'right',
-    marginLeft: 10, 
-  },
-  weightText: {
-    flex: 1,
-    fontSize: 16,
-    textAlign: 'right',
-    marginLeft: 10, 
-  },
-  sexText: {
-    flex: 1,
-    fontSize: 16,
-    textAlign: 'right',
-    marginLeft: 10, 
-  },
-  button: {
-    paddingVertical: 10, // Adjust vertical size
-    paddingHorizontal: 10, // Adjust horizontal size
-    backgroundColor: "#007bff",
-    borderRadius: 8, // Rounded corners
-  },
-  logoutText: {
-    fontSize: 18, // Adjust text size
-    color: "#fff",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  saveChangesText: {
-    fontSize: 12, // Adjust text size
-    color: "#fff",
-    fontWeight: "bold",
-    textAlign: "right",
-  },
-  buttonContainer: {
-    alignItems: 'flex-end', // Align the button to the right
-    marginTop: 10, // Add some margin to the top
-    width: '25%', // Ensure the container takes full width
-    flexDirection: 'row',
-    justifyContent: 'flex-end', // Align the button to the right
-  },
-});
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    inputRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between', // Adjust spacing between label and input
+      alignItems: 'center',
+      marginVertical: 10,
+      width: "90%", // Adjust width to fit better on mobile
+    },
+    input: {
+      height: 40,
+      borderColor: "black",
+      borderWidth: 1, // Add a border to the input
+      borderRadius: 5, // Rounded corners for the input
+      paddingHorizontal: 10, // Add padding inside the input
+      width: '50%', // Adjust width to scale properly
+      backgroundColor: '#f9f9f9', // Light background for better visibility
+    },
+    heightText: {
+      fontSize: 16,
+      textAlign: 'right', // Align text to the left for better spacing
+      marginRight: 10, // Add margin between text and input
+      width: '40%', // Ensure text label takes up proper space
+    },
+    weightText: {
+      fontSize: 16,
+      textAlign: 'right', // Align text to the left for better spacing
+      marginRight: 10, // Add margin between text and input
+      width: '40%', // Ensure text label takes up proper space
+    },
+    sexText: {
+      fontSize: 16,
+      textAlign: 'right', // Align text to the left for better spacing
+      marginRight: 10, // Add margin between text and input
+      width: '40%', // Ensure text label takes up proper space
+    },
+    button: {
+      paddingVertical: 10,
+      paddingHorizontal: 10,
+      backgroundColor: "#007bff",
+      borderRadius: 8,
+    },
+    logoutText: {
+      fontSize: 18,
+      color: "#fff",
+      fontWeight: "bold",
+      textAlign: "center",
+    },
+    saveChangesText: {
+      fontSize: 12,
+      color: "#fff",
+      fontWeight: "bold",
+      textAlign: "right",
+    },
+    buttonContainer: {
+      alignItems: 'flex-end',
+      marginTop: 10,
+      width: '90%',
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+    },
+  });
+  
 
 
 export default SettingsScreen;
