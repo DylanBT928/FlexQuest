@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useState } from 'react';
-import { View, Button, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, Button, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
-import {useUser} from '../Contexts/Usercontext'
+import { useUser } from '../Contexts/Usercontext'
 
 
 // Initialize Supabase client
@@ -48,13 +48,13 @@ function stateReducer(state: State, action: CounterAction): State {
     case "setArcane":
       return { ...state, arcane: action.value };
     default:
-      throw new Error("Unknown action.");
+      return state;
   }
 }
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [state, dispatch] = useReducer(stateReducer, initialState);
-  const [level, setLevel] = useState(0);
+  const [level, setLevel] = useState(1); // State to manage player's level
   const [levelPoints, setLevelPoints] = useState(0);
   const [levelProgress, setLevelProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true); // Loading state
@@ -83,42 +83,92 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
     }, [navigation]);
 
     useEffect(() => {
-    const loadUserData = async () => {
-      try {
-        // Fetch the user data from Supabase
-        const { data, error } = await supabase
-          .from('RPGStats') // Assuming you have a "user_stats" table
-          .select('strength, dexterity, intelligence, faith, arcane, level, levelPoints,levelProgress')
-          .eq('username',user?.username)
-          .single(); // Assuming you're fetching one record
+      navigation.setOptions({
+        headerRight: () => (
+          <View style={{ flexDirection: 'row' }}>
+            <Button title="AI" onPress={() => navigation.navigate('AI')} />
+            <Button title="Settings" onPress={() => navigation.navigate('Settings')} />
+          </View>
+        ),
+      });
+    }, [navigation]);
   
-        if (error) {
-          console.error("Error fetching data from Supabase:", error.message); // Log the error message
-          throw error; // Rethrow the error to handle it in the catch block
-        }
+    useEffect(() => {
+      const loadUserData = async () => {
+        try {
+          // Fetch the user data from Supabase
+          const { data, error } = await supabase
+            .from('RPGStats') // Assuming you have a "user_stats" table
+            .select('strength, dexterity, intelligence, faith, arcane, level, levelPoints, levelProgress')
+            .eq('username', user?.username)
+            .single(); // Fetch a single record
   
-        // If the user data exists, initialize state with it
-        if (data) {
-          const { strength, dexterity, intelligence, faith, arcane, level, levelPoints,levelProgress } = data;
-          dispatch({ type: "setStrength", value: strength });
-          dispatch({ type: "setDexterity", value: dexterity });
-          dispatch({ type: "setIntelligence", value: intelligence });
-          dispatch({ type: "setFaith", value: faith });
-          dispatch({ type: "setArcane", value: arcane });
-          setLevel(level);
-          setLevelPoints(levelPoints);
-          setLevelProgress(levelProgress);
+          if (error) {
+            console.error('Error fetching data from Supabase:', error.message);
+            throw error; // Rethrow the error to handle it in the catch block
+          }
+  
+          // If the user data exists, initialize state with it
+          if (data) {
+            console.log(data)
+            const { strength, dexterity, intelligence, faith, arcane, level, levelPoints, levelProgress } = data;
+            dispatch({ type: 'setStrength', value: strength });
+            dispatch({ type: 'setDexterity', value: dexterity });
+            dispatch({ type: 'setIntelligence', value: intelligence });
+            dispatch({ type: 'setFaith', value: faith });
+            dispatch({ type: 'setArcane', value: arcane });
+            setLevel(level);
+            setLevelPoints(levelPoints);
+            setLevelProgress(levelProgress);
+          } else {
+            console.log("no data")
+            // If no data is found, create a new row with default values
+            await createUserInDatabase();
+          }
+        } catch (error) {
+          await createUserInDatabase();
+        } finally {
+          setIsLoading(false); // Data is loaded (whether successfully or with error)
         }
-      } catch (error) {
-        console.error("Error loading user data:", error); // Log the full error object
-      } finally {
-        setIsLoading(false); // Data is loaded (whether successfully or with error)
-      }
-    };
+      };
   
     loadUserData();
   }, []); // Empty dependency array to run on mount
+  const createUserInDatabase = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('RPGStats') // Replace with your actual table name
+        .insert([{
+          username: user!.username, // Add the username from your user context
+          strength: 0,
+          dexterity: 0,
+          intelligence: 0,
+          faith: 0,
+          arcane: 0,
+          level: 1, // Default level
+          levelPoints: 0, // Default level points
+          levelProgress: 0, // Default progress
+        }]);
 
+      if (error) {
+        console.error('Error creating user in database:', error.message);
+        throw error;
+      }
+
+      console.log('New user data successfully inserted:', data);
+      // You can also initialize your state here if needed
+      dispatch({ type: 'setStrength', value: 0 });
+      dispatch({ type: 'setDexterity', value: 0 });
+      dispatch({ type: 'setIntelligence', value: 0 });
+      dispatch({ type: 'setFaith', value: 0 });
+      dispatch({ type: 'setArcane', value: 0 });
+      setLevel(1);
+      setLevelPoints(0);
+      setLevelProgress(0);
+    } catch (error) {
+      console.error('Error creating user:', error);
+    }
+  };
   useEffect(() => {
     if (levelProgress >= 1) {
       setLevel(level + 1);
@@ -221,6 +271,17 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <View style={styles.container}>
+      {Object.keys(state).map((lebron) => (
+        <View style={styles.lebron}>
+        <Image
+          source={require('../../assets/images/lebron.png')}
+          style={{
+            width: 50 + level * 30, // Increase width as the player gains levels
+            height: 50 + level * 30, // Increase height as the player gains levels
+            marginLeft: 40
+          }}
+        />
+      </View>))}
       {Object.keys(state).map((stat) => (
         <View key={stat} style={styles.progressContainer}>
           <Text style={styles.label}>{stat.toUpperCase()}</Text>
@@ -243,7 +304,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
         </View>
       ))}
 
-      <Button title="Respec" onPress={handleRespec} />
+      <Button title="Re-Spec" onPress={handleRespec} />
 
       <View style={styles.levelContainer}>
         <Text style={styles.levelLabel}>
@@ -334,6 +395,11 @@ const styles = StyleSheet.create({
   levelPoints: {
     fontSize: 18,
     marginTop: 10,
+  },
+  lebron: {
+    position: 'absolute',
+    flex: 1,
+    resizeMode: 'stretch',
   },
 });
 
