@@ -145,7 +145,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
 
   const handleIncreaseStat = async (stat: keyof State) => {
-    if (levelPoints > 0) {
+    if (levelPoints > 0 && state[stat] < 50) {
       // Update the local state (increase the stat)
       const newValue = state[stat] + 5;
       dispatch({
