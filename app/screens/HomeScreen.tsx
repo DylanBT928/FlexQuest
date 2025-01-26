@@ -269,15 +269,24 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
     );
   }
 
+  let imagePath = require('../../assets/images/lebron.png');
+  if (level >= 50) {
+    imagePath = require('../../assets/images/sunshine.png');
+  } else if (level % 6 === 0) {
+    imagePath = require('../../assets/images/laser-lebron.png');
+  } else {
+    imagePath = require('../../assets/images/lebron.png');
+  }
+
   return (
     <View style={styles.container}>
       {Object.keys(state).map((lebron) => (
         <View style={styles.lebron}>
-        <Image
-          source={require('../../assets/images/lebron.png')}
+          <Image
+          source={imagePath}
           style={{
-            width: 50 + level * 30, // Increase width as the player gains levels
-            height: 50 + level * 30, // Increase height as the player gains levels
+            width: 150 + level * 15, // Increase width as the player gains levels
+            height: 150 + level * 15, // Increase height as the player gains levels
             marginLeft: 40
           }}
         />
