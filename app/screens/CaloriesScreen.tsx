@@ -22,6 +22,15 @@ type CounterAction =
   | { type: "setProtein"; value: number }
   | { type: "setCarbs"; value: number };
 
+const getCurrentDate = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+  const day = String(today.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+  
+
 const CaloriesScreen = () => {
   const [selectedDate, setSelectedDate] = useState<string>(''); // Store selected date
   const [data, setData] = useState<any | null>(null); // Store fetched data
@@ -30,15 +39,11 @@ const CaloriesScreen = () => {
   const screenWidth = Dimensions.get('window').width; // Get the screen width
 
   // Get current date in yyyy-mm-dd format
-  const currentDate = new Date().toISOString().split('T')[0];
+  const currentDate = getCurrentDate();
 
   const handleDayPress = (day: any) => {
     // If the selected day is the current day, reset the previously selected date
-    if (day.dateString === currentDate) {
-      setSelectedDate(''); // Reset the previously selected date
-    } else {
-      setSelectedDate(day.dateString); // Update selected date
-    }
+    setSelectedDate(day.dateString); // Update selected date
   };
 
   // Fetch data from Supabase
@@ -120,16 +125,16 @@ const CaloriesScreen = () => {
           markingType={'dot'} // Marking type set to dot
           markedDates={{
             [currentDate]: { // Keep the current day always blue
-              selected: true, // Highlight the current day
-              selectedColor: 'blue', // Blue color for the current day
-              selectedTextColor: 'white', // White text color for the current day
+              selected: true,
+              selectedColor: 'blue',
+              selectedTextColor: 'white',
             },
             [selectedDate]: { // Highlight only the selected date if it's not the current day
-              selected: true, // Highlight the selected day
-              selectedColor: 'lightgrey', // Light grey color for the selected day
-              selectedTextColor: 'black', // Black text color for the selected day
+              selected: true,
+              selectedColor: 'lightgrey',
+              selectedTextColor: 'black',
             },
-          }}
+          }}          
         />
       </View>
     </SafeAreaView>
