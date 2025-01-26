@@ -56,12 +56,14 @@ const StartScreen = ({ navigation }: { navigation: any }) => {
         <TextInput
           style={styles.input}
           placeholder="Username"
+          placeholderTextColor="#888"
           value={username}
           onChangeText={setUsername}
         />
         <TextInput
           style={styles.input}
           placeholder="Password"
+          placeholderTextColor="#888"
           secureTextEntry
           value={password}
           onChangeText={setPassword}
