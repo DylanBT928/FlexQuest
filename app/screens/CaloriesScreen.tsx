@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Dimensions, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Button, SafeAreaView, Dimensions, ActivityIndicator } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Bar } from 'react-native-progress';
 import { useUser } from '../Contexts/Usercontext';
+import { useNavigation } from '@react-navigation/native';
 import { createClient } from '@supabase/supabase-js';
 
 
@@ -12,13 +13,13 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 interface State {
-  calories_lost: number;
+  calories: number;
   protein: number;
   carbs: number;
 }
 
 type CounterAction =
-  | { type: "setCalories_lost"; value: number }
+  | { type: "setCalories"; value: number }
   | { type: "setProtein"; value: number }
   | { type: "setCarbs"; value: number };
 
@@ -32,6 +33,7 @@ const getCurrentDate = () => {
   
 
 const CaloriesScreen = () => {
+  const navigation = useNavigation(); 
   const [selectedDate, setSelectedDate] = useState<string>(''); // Store selected date
   const [data, setData] = useState<any | null>(null); // Store fetched data
   const [loading, setLoading] = useState(false); // Loading state
@@ -61,7 +63,7 @@ const CaloriesScreen = () => {
       try {
         const { data, error } = await supabase
           .from('Calories')
-          .select('calories_lost, protein, carbs')
+          .select('calories, protein, carbs')
           .eq('date', selectedDate)
           .eq('username', user?.username);
         
@@ -73,7 +75,7 @@ const CaloriesScreen = () => {
           // If data is found, set it
           console.log('Fetched data:', data);
           setData({
-            calories: data[0]?.calories_lost || 0,
+            calories: data[0]?.calories || 0,
             protein: data[0]?.protein || 0,
             carbs: data[0]?.carbs || 0,
           }); // Use default values if `result` is null
@@ -110,11 +112,18 @@ const CaloriesScreen = () => {
               <Text>Carbs: {data.carbs} / 300g</Text>
               <Bar progress={data.carbs / 300} width={screenWidth * 0.8} height={screenWidth * 0.025} color="green" />
             </View>
+            <Button
+                      title="Log Calories"
+                      onPress={() => navigation.navigate('CaloriesLog')} // Navigate to CreateAccountScreen
+                    />
           </View>
+          
         ) : (
           <Text>Select a date to view data.</Text>
         )}
+        
       </View>
+      
 
       {/* Bottom Half - Calendar */}
       <View style={styles.bottomHalf}>
