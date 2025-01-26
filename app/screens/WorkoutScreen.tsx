@@ -57,7 +57,10 @@ const WorkoutScreen = () => {
           }}
         />
       </View>
-      <Button title="Log a Workout" onPress={() => navigation.navigate('WorkoutLog')} />
+      <Button
+          title="Log Workout"
+          onPress={() => navigation.navigate('WorkoutLog')} // Navigate to CreateAccountScreen
+        />
     </SafeAreaView>
   );
 };
