@@ -2,18 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Dimensions, ActivityIndicator } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Bar } from 'react-native-progress';
+import { useUser } from '../Contexts/Usercontext';
 import { createClient } from '@supabase/supabase-js';
+
 
 // Initialize Supabase client
 const SUPABASE_URL = 'https://lifotcdgyxayvtxvjjmr.supabase.co'
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpZm90Y2RneXhheXZ0eHZqam1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc3ODkwNDcsImV4cCI6MjA1MzM2NTA0N30.1_mUwKiJdFWHkK3zy6Y8MGFoMRlLH6W8hlqEmpVxBgI'
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+interface State {
+  calories_lost: number;
+  protein: number;
+  carbs: number;
+}
+
+type CounterAction =
+  | { type: "setCalories_lost"; value: number }
+  | { type: "setProtein"; value: number }
+  | { type: "setCarbs"; value: number };
+
 const CaloriesScreen = () => {
   const [selectedDate, setSelectedDate] = useState<string>(''); // Store selected date
   const [data, setData] = useState<any | null>(null); // Store fetched data
   const [loading, setLoading] = useState(false); // Loading state
-  const username = 'user123'; // Replace with the actual username (or fetch dynamically)
+  const { user } = useUser();
   const screenWidth = Dimensions.get('window').width; // Get the screen width
 
   // Get current date in yyyy-mm-dd format
@@ -30,6 +43,9 @@ const CaloriesScreen = () => {
 
   // Fetch data from Supabase
   useEffect(() => {
+    console.log('Username:', user?.username);
+    console.log('Selected Date:', selectedDate);
+
     const fetchData = async () => {
       if (!selectedDate) {
         setData(null);
@@ -38,20 +54,24 @@ const CaloriesScreen = () => {
   
       setLoading(true);
       try {
-        const { data: result, error } = await supabase
+        const { data, error } = await supabase
           .from('Calories')
           .select('calories_lost, protein, carbs')
           .eq('date', selectedDate)
-          .eq('username', username)
-          .single();
-  
+          .eq('username', user?.username);
+        
         if (error) {
           console.error('Error fetching data:', error.message);
           // If an error occurs or no data is found, populate with 0 values
           setData({ calories: 0, protein: 0, carbs: 0 });
         } else {
           // If data is found, set it
-          setData(result || { calories: 0, protein: 0, carbs: 0 }); // Use default values if `result` is null
+          console.log('Fetched data:', data);
+          setData({
+            calories: data[0]?.calories_lost || 0,
+            protein: data[0]?.protein || 0,
+            carbs: data[0]?.carbs || 0,
+          }); // Use default values if `result` is null
         }
       } catch (error) {
         console.error('Unexpected error:', error);

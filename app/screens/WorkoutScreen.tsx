@@ -2,13 +2,18 @@ import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, SafeAreaView, Dimensions } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { createClient } from '@supabase/supabase-js';
+import { useNavigation } from '@react-navigation/native';
+import WorkoutLogScreen from '../screens/WorkoutLogScreen';
+
 
 // Initialize Supabase client
 const SUPABASE_URL = 'https://lifotcdgyxayvtxvjjmr.supabase.co'
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpZm90Y2RneXhheXZ0eHZqam1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc3ODkwNDcsImV4cCI6MjA1MzM2NTA0N30.1_mUwKiJdFWHkK3zy6Y8MGFoMRlLH6W8hlqEmpVxBgI'
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+
 const WorkoutScreen = () => {
+  const navigation = useNavigation(); 
   const [selectedDate, setSelectedDate] = useState<string>(''); // Store selected date
   const [data, setData] = useState<any | null>(null); // Store fetched data
   const [loading, setLoading] = useState(false); // Loading state
@@ -52,6 +57,7 @@ const WorkoutScreen = () => {
           }}
         />
       </View>
+      <Button title="Log a Workout" onPress={() => navigation.navigate('WorkoutLog')} />
     </SafeAreaView>
   );
 };

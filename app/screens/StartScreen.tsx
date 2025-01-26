@@ -9,6 +9,7 @@ import {
   Switch,
 } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
+import { useUser } from '../Contexts/Usercontext';
 
 // Initialize Supabase with anon key (secure for frontend use)
 const SUPABASE_URL = 'https://lifotcdgyxayvtxvjjmr.supabase.co'
@@ -18,6 +19,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 const StartScreen = ({ navigation }: { navigation: any }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const { setUser } = useUser();
   
     const handleLogin = async () => {
       if (!username || !password) {
@@ -40,6 +42,7 @@ const StartScreen = ({ navigation }: { navigation: any }) => {
       if (data.length === 0) {
         Alert.alert('Error', 'Invalid username or password.');
       } else {
+        setUser({ username });
         Alert.alert('Success', 'Login successful!');
         let globalVar = username; // global variable
 
@@ -66,7 +69,7 @@ const StartScreen = ({ navigation }: { navigation: any }) => {
         <Button title="Login" onPress={handleLogin} />
         <Button
           title="Create Account"
-          onPress={() => navigation.navigate('NewUser')} // Navigate to CreateAccountScreen
+          onPress={() => navigation.navigate('NewUser' )} // Navigate to CreateAccountScreen
         />
       </View>
     );
