@@ -14,6 +14,7 @@ import AiScreen from './screens/AiScreen';
 import WorkoutLog from './screens/WorkoutLogScreen';
 import { UserProvider } from './Contexts/Usercontext';
 
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 

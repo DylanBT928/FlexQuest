@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import { View, Button, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
+import {useUser} from '../Contexts/Usercontext'
 
 // Initialize Supabase client
 const SUPABASE_URL = 'https://lifotcdgyxayvtxvjjmr.supabase.co'
@@ -56,6 +57,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [levelPoints, setLevelPoints] = useState(0);
   const [levelProgress, setLevelProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true); // Loading state
+  const {user} = useUser();
 
   const MAX_LEVEL = 100;
   const MAX_VALUE = 50;
@@ -68,8 +70,8 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
         // Fetch the user data from Supabase
         const { data, error } = await supabase
           .from('RPGStats') // Assuming you have a "user_stats" table
-          .select('strength, dexterity, intelligence, faith, arcane, level, levelPoints')
-          .eq('username','Alexis')
+          .select('strength, dexterity, intelligence, faith, arcane, level, levelPoints,levelProgress')
+          .eq('username',user?.username)
           .single(); // Assuming you're fetching one record
   
         if (error) {
@@ -79,7 +81,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   
         // If the user data exists, initialize state with it
         if (data) {
-          const { strength, dexterity, intelligence, faith, arcane, level, levelPoints } = data;
+          const { strength, dexterity, intelligence, faith, arcane, level, levelPoints,levelProgress } = data;
           dispatch({ type: "setStrength", value: strength });
           dispatch({ type: "setDexterity", value: dexterity });
           dispatch({ type: "setIntelligence", value: intelligence });
@@ -87,6 +89,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           dispatch({ type: "setArcane", value: arcane });
           setLevel(level);
           setLevelPoints(levelPoints);
+          setLevelProgress(levelProgress);
         }
       } catch (error) {
         console.error("Error loading user data:", error); // Log the full error object
@@ -109,6 +112,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   const handleIncreaseLevel = async () => {
     if (levelProgress < 1) {
       setLevelProgress(levelProgress + 0.1); // Increase progress by 10%
+      updateUserData({}, level, levelPoints, levelProgress)
     }
   
     // Update level after progress is maxed out
@@ -118,16 +122,16 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       setLevelPoints(levelPoints + 1); // Increment level points
   
       // Update level and level points in Supabase
-      await updateUserData({}, level + 1, levelPoints + 1); // Empty object for stats as we're only updating level/level points
+      await updateUserData({}, level + 1, levelPoints + 1, 0); // Empty object for stats as we're only updating level/level points
     }
   };
 
-  const updateUserData = async (updatedStats: Partial<State>, updatedLevel: number, updatedLevelPoints: number) => {
+  const updateUserData = async (updatedStats: Partial<State>, updatedLevel: number, updatedLevelPoints: number, updatedLevelProgress: number) => {
     try {
       const { data, error } = await supabase
         .from('RPGStats') // Replace with your actual table name
-        .update({ ...updatedStats, level: updatedLevel, levelPoints: updatedLevelPoints }) // Update fields
-        .eq('username', 'Alexis'); // Assuming 'user_id' is your unique identifier, replace with actual user identifier
+        .update({ ...updatedStats, level: updatedLevel, levelPoints: updatedLevelPoints,levelProgress: updatedLevelProgress }) // Update fields
+        .eq('username', user!.username); // Assuming 'user_id' is your unique identifier, replace with actual user identifier
   
       if (error) {
         console.error("Error updating user data:", error.message);
@@ -141,7 +145,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
 
   const handleIncreaseStat = async (stat: keyof State) => {
-    if (levelPoints > 0) {
+    if (levelPoints > 0 && state[stat] < 50) {
       // Update the local state (increase the stat)
       const newValue = state[stat] + 5;
       dispatch({
@@ -154,7 +158,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
       // Prepare updated data for Supabase
       const updatedStats: Partial<State> = { [stat]: newValue };
-      await updateUserData(updatedStats, level, levelPoints); // Update the Supabase database
+      await updateUserData(updatedStats, level, levelPoints,levelProgress); // Update the Supabase database
     }
   };
   const handleRespec = async () => {
@@ -176,7 +180,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           arcane: 0,
           levelPoints: level, // Keep the current levelPoints
         })
-        .eq('username', 'Alexis'); // Assuming 'username' is your unique identifier
+        .eq('username', user!.username); // Assuming 'username' is your unique identifier
     
       if (error) {
         console.error("Error updating user data:", error.message);
